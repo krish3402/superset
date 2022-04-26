@@ -1,7 +1,7 @@
 ######################################################################
 # Official Superset image
 ######################################################################
-ARG SUPERSET_VER=1.1.0
+ARG SUPERSET_VER=1.4.1
 FROM apache/superset:${SUPERSET_VER} AS superset-official
 
 # copy patch files to official image
