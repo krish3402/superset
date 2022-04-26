@@ -8,6 +8,23 @@ FROM apache/superset:${SUPERSET_VER} AS superset-official
 ARG SUPERSET_VER
 COPY ./${SUPERSET_VER}/superset /app/superset
 COPY ./${SUPERSET_VER}/superset-frontend /app/superset-frontend
+RUN pip install --no-cache gevent psycopg2 redis
+
+RUN superset fab create-admin \
+               --username admin \
+               --firstname Superset \
+               --lastname Admin \
+               --email admin@superset.com \
+               --password admin
+#COPY config.py /app/superset
+#COPY customSecurity.py /app/superset
+#COPY client_secret.json /app
+RUN superset db upgrade
+RUN superset init
+RUN python -m pip install --upgrade pip
+RUN pip install elasticsearch-dbapi
+RUN pip install flask-oidc
+
 
 ######################################################################
 # Node stage to deal with static asset construction
